@@ -1,0 +1,63 @@
+openapi: 3.0.2
+info:
+  title: pank
+  version: 1.0.0
+paths:
+  /users:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/postUsersRequest'
+        required: true
+      tags:
+        - users
+      responses:
+        '201':
+          content:
+            application/json: {}
+          description: User created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+              examples:
+                userAlreadyExists:
+                  value:
+                    error: 'User validation failed: username: already exists'
+                passwordTooShort:
+                  value:
+                    error: Password too short
+          description: Invalid input
+      summary: Creates a user
+components:
+  schemas:
+    postUsersRequest:
+      title: Root Type for postUsersRequest
+      description: ''
+      type: object
+      properties:
+        name:
+          description: Full name
+          required: true
+          type: string
+        username:
+          type: string
+        password:
+          description: Minimum 8 characters
+          type: string
+      example:
+        name: Steven Klaos
+        username: steven
+        password: ykskakskolmneli
+    errorResponse:
+      title: Root Type for errorResponse
+      description: ''
+      type: object
+      properties:
+        error:
+          type: string
+      example:
+        error: Error message
